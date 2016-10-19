@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<contacts>
+   <contact>
+      <Name>John Doe</Name>
+      <city>Chicago</city>
+      <city>Denver</city>
+   </contact>
+   <contact>
+      <name>Jane Doe</name>
+      <city>New York</city>
+   </contact>
+   <contact>
+      <name>Sandra Smith</name>
+      <city>Denver</city>
+      <city>Miami</city>
+   </contact>
+   <contact>
+      <name>Bob Jones</name>
+      <city>Chicago</city>
+   </contact>
+</contacts>

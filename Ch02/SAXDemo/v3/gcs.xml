@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE recipeml PUBLIC "-//FormatData//DTD RecipeML 0.5//EN"
+                          "http://www.formatdata.com/recipeml/recipeml.dtd">
+<recipeml version="0.5">
+   <recipe>
+      <head>
+         <title>Grilled Cheese Sandwich</title>
+      </head>
+      <ingredients>
+         <ing>
+            <amt><qty>2</qty><unit>slice</unit></amt>
+            <item>bread</item>
+         </ing>
+         <ing>
+            <amt><qty>1</qty><unit>slice</unit></amt>
+            <item>cheese</item>
+         </ing>
+         <ing>
+            <amt><qty>2</qty><unit>pat</unit></amt>
+            <item>margarine</item>
+         </ing>
+      </ingredients>
+      <directions>
+         <step>Place frying pan on element and select medium heat.</step>
+         <step>For each bread slice, smear one pat of margarine on one side
+               of bread slice.</step>
+         <step>Place cheese slice between bread slices with 
+               margarine-smeared sides away from the cheese.</step>
+         <step>Place sandwich in frying pan with one margarine-smeared size 
+               in contact with pan.</step>
+         <step>Fry for a couple of minutes and flip.</step>
+         <step>Fry other side for a minute and serve.</step>
+      </directions>
+   </recipe>
+</recipeml>

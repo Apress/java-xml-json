@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<recipe xmlns="http://www.tutortutor.ca/"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.tutortutor.ca/schemas recipe.xsd">
+   <title>
+      Grilled Cheese Sandwich
+   </title>
+   <ingredients>
+      <ingredient qty="2">
+         bread slice
+      </ingredient>
+      <ingredient>
+         cheese slice
+      </ingredient>
+      <ingredient qty="2">
+         margarine pat
+      </ingredient>
+   </ingredients>
+   <instructions>
+      Place frying pan on element and select medium heat. For each bread 
+      slice, smear one pat of margarine on one side of bread slice. Place 
+      cheese slice between bread slices with margarine-smeared sides away 
+      from the cheese. Place sandwich in frying pan with one 
+      margarine-smeared side in contact with pan. Fry for a couple of 
+      minutes and flip. Fry other side for a minute and serve.
+   </instructions>
+</recipe>

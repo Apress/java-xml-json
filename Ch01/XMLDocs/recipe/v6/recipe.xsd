@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="title" type="xs:string"/>
+<xs:element name="instructions" type="xs:string"/>
+<xs:attribute name="qty" type="xs:unsignedInt" default="1"/>
+<xs:element name="recipe">
+   <xs:complexType>
+      <xs:sequence>
+         <xs:element ref="title"/>
+         <xs:element ref="ingredients"/>
+         <xs:element ref="instructions"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:element>
+<xs:element name="ingredients">
+   <xs:complexType>
+      <xs:sequence>
+         <xs:element ref="ingredient" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:element>
+<xs:element name="ingredient">
+   <xs:complexType>
+      <xs:simpleContent>
+         <xs:extension base="xs:string">
+            <xs:attribute ref="qty"/>
+         </xs:extension>
+      </xs:simpleContent>
+   </xs:complexType>
+</xs:element>

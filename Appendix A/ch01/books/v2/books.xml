@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE books [
+   <!ELEMENT books (book+)>
+   <!ELEMENT book (title, author+, publisher)>
+   <!ELEMENT title (#PCDATA)>
+   <!ELEMENT author (#PCDATA)>
+   <!ELEMENT publisher (#PCDATA)>
+   <!ATTLIST book isbn CDATA #REQUIRED>
+   <!ATTLIST book pubyear CDATA #REQUIRED>
+]>
+<books>
+   <book isbn="0201548550" pubyear="1992">
+      <title>
+         Advanced C++
+      </title>
+      <author>
+         James O. Coplien
+      </author>
+      <publisher>
+         Addison Wesley
+      </publisher>
+   </book>
+   <book isbn="9781430210450" pubyear="2008">
+      <title>
+         Beginning Groovy and Grails
+      </title>
+      <author>
+         Christopher M. Judd
+      </author>
+      <author>
+         Joseph Faisal Nusairat
+      </author>
+      <author>
+         James Shingler
+      </author>
+      <publisher>
+         Apress
+      </publisher>
+   </book>
+   <book isbn="0201310058" pubyear="2001">
+      <title>
+         Effective Java
+      </title>
+      <author>
+         Joshua Bloch
+      </author>
+      <publisher>
+         Addison Wesley
+      </publisher>
+   </book>
+</books>

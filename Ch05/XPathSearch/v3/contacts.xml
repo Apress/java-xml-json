@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<contacts xmlns="http://www.tutortutor.ca/">
+   <contact>
+      <name>John Doe</name>
+      <birth>1953-01-02</birth>
+      <city>Chicago</city>
+      <city>Denver</city>
+   </contact>
+   <contact>
+      <name>Jane Doe</name>
+      <birth>1965-07-12</birth>
+      <city>New York</city>
+   </contact>
+   <contact>
+      <name>Sandra Smith</name>
+      <birth>1976-11-22</birth>
+      <city>Denver</city>
+      <city>Miami</city>
+   </contact>
+   <contact>
+      <name>Bob Jones</name>
+      <birth>1958-03-14</birth>
+      <city>Chicago</city>
+   </contact>
+</contacts>

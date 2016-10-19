@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<article title="The Rebirth of JavaFX" lang="en">
+   <abstract>
+      JavaFX 2 marks a significant milestone in the history of JavaFX. Now
+      that Sun Microsystems has passed the torch to Oracle, we have seen the 
+      demise of JavaFX Script and the emerge of Java APIs (such as 
+      <code-inline>javafx.application.Application</code-inline>) for 
+      interacting with this technology. This article introduces you to this 
+      new flavor of JavaFX, where you learn about JavaFX 2 architecture and 
+      key APIs.
+   </abstract>
+   <body>
+   </body>
+</article>

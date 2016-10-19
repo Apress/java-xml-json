@@ -1,0 +1,490 @@
+<!-- ============================================================= -->
+<!--             Recipe Markup Language (RecipeML)  DTD            -->
+<!--                          Version 0.5                          -->
+<!--                        4 November 2000                        -->
+<!--                                                               -->
+<!-- This DTD is identified by the PUBLIC and SYSTEM identifiers:  -->
+<!--                                                               -->
+<!-- PUBLIC  "-//FormatData//DTD RecipeML 0.5//EN"                 -->
+<!-- SYSTEM  "http://www.formatdata.com/recipeml/recipeml.dtd"     -->
+<!--                                                               -->
+<!-- Copyright (c) 1999, 2000 James Saiya, FormatData              -->
+<!--                                                               -->
+<!-- http://www.formatdata.com                                     -->
+<!-- ============================================================= -->
+
+<!-- ============================================================= -->
+<!--                       attribute entities                      -->
+<!-- ============================================================= -->
+
+<!-- attributes common to nearly all elements -->
+<!ENTITY % core.att '
+  id           ID          #IMPLIED
+  class        NMTOKEN     #IMPLIED
+  title        CDATA       #IMPLIED'>
+
+<!-- internationalization attributes -->
+<!ENTITY % i18n.att '
+  xml:lang     NMTOKEN     #IMPLIED'>
+
+<!-- attributes for elements that contain measurements -->
+<!ENTITY % measurement.att '
+  system       (US | Imperial | metric | SI | other)  #IMPLIED'>
+
+<!-- attributes common to most elements -->
+<!ENTITY % common.att '
+  %core.att;
+  %i18n.att;'>
+
+<!-- attributes for elements that are divisions of the ingredients,
+  directions, or tools sections-->
+<!ENTITY % div.att '
+  %core.att;
+  %i18n.att;
+  %measurement.att;
+  type         (main | variation | titled)  "titled"'>
+
+<!-- ============================================================= -->
+<!--                         class entities                        -->
+<!-- ============================================================= -->
+
+<!ENTITY % inline.class 'span | frac | sep'>
+<!ENTITY % measure.class 'amt | time | temp'>
+<!ENTITY % step.class 'action | condition | setting | brandname | tool 
+  | toolref | ingref | steptime | %inline.class; | %measure.class;'>
+<!-- <!ENTITY % misc.class 'extension | syntax-error'> -->
+
+<!-- ============================================================= -->
+<!--                     content model entities                    -->
+<!-- ============================================================= -->
+
+<!ENTITY % amt.cont '(amt, (sep?, amt)*)'>
+<!ENTITY % time.cont '(time, (sep?, time)*)'>
+<!ENTITY % temp.cont '(temp, (sep?, temp)*)'>
+<!ENTITY % ing.cont '((%amt.cont;)?, modifier?, item, prep?, ing-note*, 
+  prodcode*)'>
+
+<!-- ============================================================= -->
+<!--                       document element                        -->
+<!-- ============================================================= -->
+
+<!ELEMENT recipeml (meta*, (menu | recipe))>
+<!ATTLIST recipeml
+  version NMTOKEN #FIXED "0.5"
+  generator CDATA #IMPLIED
+  %common.att; >
+
+<!-- data which describes the whole document -->
+<!-- the meta attributes match those of the HTML 4.0 meta element -->
+<!ELEMENT meta EMPTY>
+<!ATTLIST meta
+  name (DC.Title | DC.Subject | DC.Description | DC.Type | 
+        DC.Source | DC.Relation | DC.Coverage | 
+        DC.Creator | DC.Publisher | DC.Contributor | DC.Rights | 
+        DC.Date | DC.Format | DC.Identifier | DC.Language) 
+  #REQUIRED
+  content CDATA #REQUIRED
+  scheme CDATA #IMPLIED
+  lang CDATA #IMPLIED >
+  <!-- name: values are from the set of Dublin Core (DC) tokens -->
+  <!-- (see http://purl.org/dc) -->
+  <!-- scheme: format of the data in the 'content' attribute -->
+  <!-- (see http://purl.org/dc) -->
+  <!-- lang: language of the data in the 'content' attribute -->
+
+<!ELEMENT menu (head, description*, recipe*)>
+<!ATTLIST menu
+  %common.att; 
+  %measurement.att; >
+
+<!ELEMENT recipe (head, description*, equipment?, ingredients, directions, 
+  nutrition?, diet-exchanges?)>
+<!ATTLIST recipe
+  %common.att; 
+  %measurement.att; >
+
+<!-- ============================================================= -->
+<!--                     head and its children                     -->
+<!-- ============================================================= -->
+
+<!ELEMENT head (title, subtitle?, version?, source?, categories?, 
+  preptime*, yield?)>
+
+<!ELEMENT title (#PCDATA | brandname | %inline.class;)*>
+<!ATTLIST title
+  %common.att; >
+
+<!ELEMENT subtitle (#PCDATA | brandname | %inline.class;)*>
+<!ATTLIST subtitle
+  %common.att; >
+
+<!-- which refinement of the recipe is this? -->
+<!ELEMENT version (#PCDATA)>
+<!ATTLIST version
+  %common.att; >
+
+<!-- credit or source information displayed as a footnote -->
+<!ELEMENT source (#PCDATA | srcitem)*>
+<!ATTLIST source
+  %common.att; >
+
+<!ELEMENT srcitem (#PCDATA | %inline.class;)*>
+<!ATTLIST srcitem
+  %common.att; 
+  type CDATA #IMPLIED >
+  <!-- type: values could be Dublin Core element names, i.e., DC.Title, 
+       DC.Creator, DC.Publisher, DC.Contributor, DC.Rights, 
+       DC.Date, DC.Identifier) -->
+
+<!-- list of categories -->
+<!-- (e.g. dinner (meal), entree (course), pasta (ingredient),
+     Chinese (cuisine), etc.) -->
+<!ELEMENT categories (#PCDATA | cat)*>
+<!ATTLIST categories
+  %common.att; 
+  content NMTOKENS #IMPLIED >
+  <!-- content: (optional) a list of the categories in an alternate
+       representation -->
+
+<!-- (optional) way to mark individual categories in the content
+     of <categories> element -->
+<!ELEMENT cat (#PCDATA)>
+<!ATTLIST cat
+  %common.att; 
+  type CDATA #IMPLIED >
+  <!-- type: example values - meal, course, ingredient, cuisine,
+       etc. -->
+
+<!-- can be one of many time periods involved in the
+     preparation process -->
+<!ELEMENT preptime (%time.cont;)>
+<!ATTLIST preptime
+  %common.att; 
+  type CDATA #REQUIRED >
+  <!-- type: example values - preparation, rising, marinating, cooking,
+       cooling, standing, etc. -->
+
+<!ELEMENT yield (#PCDATA | qty | range | unit)*>
+<!ATTLIST yield
+  %common.att; >
+
+<!-- ============================================================= -->
+<!--                   equipment and sub-elements                  -->
+<!-- ============================================================= -->
+
+<!ELEMENT equipment (equip-div+ | (note*, tool, (note | tool)*))>
+<!ATTLIST equipment
+  %common.att; 
+  %measurement.att; >
+
+<!ELEMENT equip-div (title?, description?, note*, tool, 
+  (note | tool)*)>
+<!ATTLIST equip-div
+  %div.att; >
+
+<!ELEMENT tool (#PCDATA | brandname | qty | range | size | unit | 
+  %inline.class;)*>
+<!ATTLIST tool
+  %common.att; 
+  optional (yes | no) "no" >
+
+<!-- ============================================================= -->
+<!--                  ingredients and sub-elements                 -->
+<!-- ============================================================= -->
+
+<!ELEMENT ingredients (ing-div+ | (note*, ing, (note | ing)*))>
+<!ATTLIST ingredients
+  %common.att; 
+  %measurement.att; >
+
+<!ELEMENT ing-div (title?, description?, note*, ing, (note | ing)*)>
+<!ATTLIST ing-div
+  %div.att; >
+
+<!ELEMENT ing (%ing.cont;, alt-ing*)>
+<!ATTLIST ing
+  %common.att; 
+  optional (yes | no) "no" >
+
+<!-- alternate or substitute ingredient -->
+<!ELEMENT alt-ing (%ing.cont;)>
+<!ATTLIST alt-ing
+  %common.att; >
+
+<!ELEMENT modifier (#PCDATA | size | %measure.class; | %inline.class;)*>
+<!ATTLIST modifier
+  %common.att; >
+
+<!ELEMENT item (#PCDATA | brandname | %inline.class;)*>
+<!ATTLIST item
+  %common.att; >
+
+<!ELEMENT prep (#PCDATA | size | %measure.class; | %inline.class;)*>
+<!ATTLIST prep
+  %common.att; >
+
+<!ELEMENT ing-note (#PCDATA | %measure.class; | %inline.class;)*>
+<!ATTLIST ing-note
+  %common.att; >
+
+<!-- product code for inventory control systems, automated shopping,
+     etc. -->
+<!ELEMENT prodcode EMPTY>
+<!ATTLIST prodcode
+  id ID #IMPLIED
+  type CDATA #REQUIRED
+  content CDATA #REQUIRED
+  domain CDATA #IMPLIED >
+  <!-- type: typical values would be: "UPC", "PLU", "SKU" -->
+  <!--   (see http://www.uc-council.org) -->
+  <!-- domain: realm in which the code applies - "Sav-Mart", etc. -->
+
+<!-- ============================================================= -->
+<!--                  directions and sub-elements                  -->
+<!-- ============================================================= -->
+
+<!--
+<!ELEMENT directions (dir-div+ | (note*, step, (note | step)*))> 
+-->
+<!ELEMENT directions (dir-div+ | ((note | ing)*, step, 
+  (note | ing | step)*))>
+<!ATTLIST directions
+  %common.att; 
+  %measurement.att; >
+
+<!--
+<!ELEMENT dir-div (title?, description?, note*, step, (note | step)*)> 
+-->
+<!ELEMENT dir-div (title?, description?, (note | ing)*, step, 
+  (note | ing | step)*)>
+<!ATTLIST dir-div
+  %div.att; 
+  duration CDATA #IMPLIED >
+
+<!ELEMENT step (#PCDATA | %step.class; | substep)*>
+<!ATTLIST step
+  %common.att; 
+  duration CDATA #IMPLIED
+  type CDATA "cooking"
+  optional (yes | no) "no" >
+
+<!ELEMENT substep (#PCDATA | %step.class;)*>
+<!ATTLIST substep
+  %common.att; 
+  duration CDATA #IMPLIED
+  type CDATA "cooking"
+  optional (yes | no) "no" >
+
+<!ELEMENT action (#PCDATA | %measure.class; | %inline.class;)*>
+<!ATTLIST action
+  %common.att; 
+  code CDATA #IMPLIED >
+  <!-- code: machine-processable instruction for cooking automation -->
+
+<!ELEMENT condition (#PCDATA | %measure.class; | %inline.class;)*>
+<!ATTLIST condition
+  %common.att; 
+  code CDATA #IMPLIED >
+  <!-- code: machine-processable instruction for cooking automation -->
+
+<!-- setting for heat or speed, etc. -->
+<!ELEMENT setting (#PCDATA | %measure.class; | %inline.class;)*>
+<!ATTLIST setting
+  %common.att; 
+  value CDATA #IMPLIED >
+  <!-- value: machine-processable representation of setting -->
+
+<!ELEMENT toolref (#PCDATA | brandname | qty | range | size | unit | 
+  %inline.class;)*>
+<!ATTLIST toolref
+  %common.att; 
+  toolid IDREF #REQUIRED >
+
+<!ELEMENT ingref (#PCDATA | brandname | qty | range | size | unit | 
+  %inline.class;)*>
+<!ATTLIST ingref
+  %common.att; 
+  ingid IDREF #REQUIRED >
+
+<!ELEMENT steptime (%time.cont;)>
+
+<!-- ============================================================= -->
+<!--             nutrition and diet-exchanges elements             -->
+<!-- ============================================================= -->
+
+<!-- nutrition information -->
+<!ELEMENT nutrition (#PCDATA | nutrient-group | nutrient)*>
+<!ATTLIST nutrition
+  %common.att; 
+  standard CDATA "USDV" >
+  <!-- USDV = U.S. Daily Value -->
+
+<!ELEMENT nutrient-group (title?, nutrient+)>
+<!ATTLIST nutrient-group
+  %common.att; 
+  standard CDATA "USDV" >
+  <!-- USDV = U.S. Daily Value -->
+
+<!ELEMENT nutrient (n-name+, ((qty, unit?) | percent)+)>
+<!ATTLIST nutrient
+  %common.att; >
+
+<!ELEMENT n-name (#PCDATA)>
+<!ATTLIST n-name
+  %common.att; 
+  alternate (yes | no) "no" >
+
+<!ELEMENT percent (#PCDATA | frac)*>
+<!-- CONSTRAINT: content should be restricted to decimal digits; 
+     to be further defined in XML Schema version 
+-->
+<!ATTLIST percent
+  standard CDATA "USDV" >
+  <!-- USDV = U.S. Daily Value -->
+
+<!-- diet exchange data -->
+<!ELEMENT diet-exchanges (#PCDATA | exchange)*>
+<!ATTLIST diet-exchanges
+  %common.att; 
+  authority CDATA #IMPLIED>
+  <!-- authority: the organization which created the guidelines -->
+
+<!ELEMENT exchange (#PCDATA | qty | range)*>
+<!ATTLIST exchange
+  %common.att; >
+
+<!-- ============================================================= -->
+<!--               measurments and utility elements                -->
+<!-- ============================================================= -->
+
+<!-- explanatory block of text that may precede a recipe or section -->
+<!ELEMENT description (#PCDATA | %measure.class; | %inline.class;)*>
+<!ATTLIST description
+  %common.att; >
+
+<!-- informative block of text that may be within a section -->
+<!ELEMENT note (#PCDATA | %measure.class; | %inline.class;)*>
+<!ATTLIST note
+  %common.att; 
+  type CDATA #IMPLIED >
+  <!-- type: typical values would be - Note, Tip, Hint, Suggestion, 
+       Variation, Technique, Warning -->
+
+<!ELEMENT amt ((qty | range)?, size?, unit?, size?)>
+<!ATTLIST amt
+  %common.att; 
+  %measurement.att; 
+  variation CDATA #IMPLIED >
+
+<!ELEMENT qty (#PCDATA | frac)*>
+<!ATTLIST qty
+  %core.att; >
+
+<!ELEMENT range (q1, sep?, q2)>
+<!ATTLIST range
+  %core.att; >
+<!ELEMENT q1 (#PCDATA | frac)*>
+<!ATTLIST q1
+  %core.att; >
+<!ELEMENT q2 (#PCDATA | frac)*>
+<!ATTLIST q2
+  %core.att; >
+
+<!ELEMENT size (#PCDATA | qty | range | unit)*>
+<!ATTLIST size
+  %common.att; 
+  code NMTOKEN #IMPLIED >
+  <!-- code: machine-processable representation of size -->
+
+<!ELEMENT unit (#PCDATA)>
+<!ATTLIST unit
+  %common.att; 
+  %measurement.att; 
+  unit NMTOKEN #IMPLIED
+  type (mass | weight | volume | area | length | other) #IMPLIED >
+  <!-- unit: machine-processable representation of unit -->
+
+<!ELEMENT time ((qty | range), timeunit)>
+<!ATTLIST time
+  %core.att; >
+
+<!ELEMENT timeunit (#PCDATA)>
+<!ATTLIST timeunit
+  %common.att; 
+  %measurement.att; 
+  unit NMTOKEN #IMPLIED >
+  <!-- unit: machine-processable representation of unit -->
+
+<!ELEMENT temp ((qty | range), tempunit)>
+<!ATTLIST temp
+  %core.att; >
+
+<!ELEMENT tempunit (#PCDATA)>
+<!ATTLIST tempunit
+  %common.att; 
+  %measurement.att; 
+  unit (C | F | K) #IMPLIED >
+  <!-- unit: coded representation of unit -->
+
+<!-- fraction -->
+<!ELEMENT frac (n, sep?, d)>
+<!ATTLIST frac
+  %common.att; >
+<!ELEMENT n (#PCDATA)>
+<!ELEMENT d (#PCDATA)>
+<!-- n, d CONSTRAINT: content must be restricted to decimal digits -->
+<!-- separator - punctuation or word(s) appearing between elements -->
+<!-- e.g.: 2 <sep>to</sep> 3 pounds -->
+<!-- content is optionaly displayed depending on style sheet -->
+
+<!ELEMENT sep (#PCDATA)>
+<!ATTLIST sep
+  %common.att; >
+
+<!ELEMENT brandname (#PCDATA | mfr | product)*>
+<!ATTLIST brandname
+  %common.att; >
+
+<!-- the part of <brandname> that is the name of the manufacturer -->
+<!ELEMENT mfr (#PCDATA | %inline.class;)*>
+<!ATTLIST mfr
+  %common.att; 
+  uccMin NMTOKEN #IMPLIED >
+  <!-- uccMin: Uniform Code Council Manufacturer Identification 
+       Number -->
+  <!-- (see http://www.uc-council.org) -->
+
+<!-- the part of <brandname> that is the name of the product itself -->
+<!ELEMENT product (#PCDATA | %inline.class;)*>
+<!ATTLIST product
+  %common.att; 
+  uccIcn NMTOKEN #IMPLIED >
+  <!-- uccIcn: Uniform Code Council Item Code Number -->
+  <!-- (see http://www.uc-council.org) -->
+
+<!-- useful for associating style information with content otherwise
+     not marked up -->
+<!ELEMENT span (#PCDATA | %inline.class;)*>
+<!ATTLIST span
+  %common.att; >
+
+<!-- extensibility mechanism -->
+<!-- ** possible future enhancement **
+<!ELEMENT extension ANY>
+<!ATTLIST extension 
+  %common.att; >
+-->
+
+<!-- mark an error in conversion from a legacy format -->
+<!-- ** possible future enhancement **
+<!ELEMENT syntax-error ANY>
+<!ATTLIST syntax-error 
+  %common.att; 
+  translator  CDATA    #IMPLIED >
+-->
+<!-- translator: name (and version) of tool used to 
+     perform conversion -->
+
+<!-- ============================================================= -->
+<!--                       END RECIPEML DTD                        -->
+<!-- ============================================================= -->
